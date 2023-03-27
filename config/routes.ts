@@ -1,5 +1,5 @@
 export const routes = [
-  { path: '/', redirect: '/a1' },
+  { path: '/', redirect: '/history' },
   {
     path: '/history',
     component: '@/pages/mockDemo1',
@@ -28,5 +28,10 @@ export const routes = [
     component: '@/pages/mockDemo3',
     name: 'demandManagement',
     icon: 'icon-jichushuju',
+  },
+  {
+    path: '/sqlDemo',
+    component: '@/pages/sqlDemo',
+    name: 'sqlDemo',
   },
 ];

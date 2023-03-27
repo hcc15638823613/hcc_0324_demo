@@ -52,4 +52,5 @@ export default {
   'menu.dashboard.week': '在线编辑器',
   'menu.history': '历史数据',
   'menu.demandManagement': '立体长方体',
+  'menu.sqlDemo': 'SQL在线编辑器',
 };

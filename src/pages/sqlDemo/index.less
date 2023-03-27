@@ -1,0 +1,55 @@
+.editorContent {
+  padding: 10px;
+  background-color: #fafafa;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  .contentTopleft {
+    height: 400px;
+    background: #62a8d1;
+    padding: 0 5px 0 5px;
+    width: 17%;
+    .imgBackgrounp {
+      background: url('../../public/image/bg_table.png') no-repeat center;
+      background-size: 30%;
+      margin-top: 10px;
+      height: 30px;
+    }
+    .contentTopLeftTable {
+      //   height: 60px;
+      #leftMenu li {
+        height: 30px;
+        /* width: 240px; */
+        background-color: #438eb9;
+        border-radius: 2px;
+        font-size: 12px;
+        color: #e4e4e4;
+        margin-bottom: 4px;
+        list-style-type: none;
+        vertical-align: middle;
+        line-height: 30px;
+        z-index: 1;
+        cursor: pointer;
+        padding-left: 8px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+  .contentTopRight {
+    width: 100%;
+    padding: 0;
+    height: 400px;
+    #container {
+      background: url('../../public/image/bg_edit.png') no-repeat center;
+      height: 100%;
+      min-height: 400px;
+      position: relative;
+      border: 1px solid #e6e6e6;
+      background-color: #f2f2f2;
+      z-index: 0;
+      overflow: auto;
+    }
+  }
+}
