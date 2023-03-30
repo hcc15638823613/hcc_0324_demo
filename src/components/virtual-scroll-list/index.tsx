@@ -69,7 +69,6 @@ function VirtualScrollList<T>({
     }
     return 0;
   };
-  console.log(rowNodeHeight, 'rowNodeHeight++');
 
   const handleTableScroll = (e: React.UIEvent<HTMLDivElement>): void => {
     const scrollTop: number = (e.target as HTMLDivElement).scrollTop;

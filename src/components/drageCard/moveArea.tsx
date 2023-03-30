@@ -1,4 +1,3 @@
-// import React, { useState, useCallback } from 'react';
 import { Container } from './Container';
 import type { CardsItemType } from './type';
 import '@/pages/sqlDemo/index.less';

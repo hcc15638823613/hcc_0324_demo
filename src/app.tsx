@@ -12,7 +12,6 @@ export const initialStateConfig = {
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout = ({ initialState }: any) => {
-  console.log(initialState, 'initialState---+++');
   let breadcrumbName = [] as any;
   return {
     contentStyle: {

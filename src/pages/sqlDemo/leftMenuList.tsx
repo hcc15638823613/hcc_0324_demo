@@ -1,4 +1,4 @@
-import { Card } from '@/components/drageCard';
+import { Card } from '@/components/drageCard/leftMenuListCard';
 import type { CardType } from '@/components/drageCard/type';
 import { useCallback } from 'react';
 import update from 'immutability-helper';

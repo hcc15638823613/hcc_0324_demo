@@ -1,8 +1,12 @@
 import { useDrop } from 'react-dnd';
-import { ItemTypes } from './ItemType';
+import { ItemTypes } from './type';
 import { Box } from './Box';
 import update from 'immutability-helper';
 import type { CardsItemType } from './type';
+import { uniqueId, uniqBy } from 'lodash';
+import { useModel } from 'umi';
+import { Modal, Form, Select } from 'antd';
+import { useState, useMemo } from 'react';
 
 interface PropsType {
   cardsInBox: CardsItemType[];
@@ -17,46 +21,70 @@ export const Container = ({
   setCardsInBox,
   pushNewCardInBox,
 }: PropsType) => {
-  console.log(cardsInBox, 'cardsInBox---');
+  const [form] = Form.useForm();
+  // 画布上的 dom实例
+  const { jsPlumbListState, setJsPlumbListState } = useModel('useSqlInfo');
+  // 工具
+  const [jsPlumb, setJsPlumb] = useState<any>();
+  // jsPlumb实例
+  const [conneInfo, setConneInfo] = useState<any>();
+  // 删除的实体
+  const [deleteConScene, setDeleteConScene] = useState<any>();
+  // 填写 连线label的modal
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  // 是否删除label连线的modal
+  const [isDeleteLineModal, setIsDeleteLineModal] = useState<boolean>(false);
+
   function checkID(item: any) {
     cardsInBox.forEach((card) => {
       if (card.id === item.id) {
-        const min = Math.ceil(1);
-        const max = Math.floor(100);
-        item.id = Math.floor(Math.random() * (max - min + 1)) + min; //Максимум и минимум включаются
+        item.id = uniqueId('onlyId');
         checkID(item);
       }
     });
   }
-  //   function getMousePos(event) {
-  //     var e = event || window.event;
-  //     var scrollX =
-  //       document.documentElement.scrollLeft || document.body.scrollLeft;
-  //     var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
-  //     var x = e.pageX || e.clientX + scrollX;
-  //     var y = e.pageY || e.clientY + scrollY;
-  //     return { x: x, y: y };
-  //   }
+
+  function getMousePos(event?: any) {
+    const flowChart = document
+      .getElementById('flowChart')
+      ?.getBoundingClientRect();
+    const domLeft = flowChart?.left || 0;
+    const domTop = flowChart?.top || 0;
+    var e = event || window.event;
+    var scrollX =
+      document.documentElement.scrollLeft || document.body.scrollLeft;
+    var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+    var x = e.pageX || e.clientX + scrollX;
+    var y = e.pageY || e.clientY + scrollY;
+    return { x: x - domLeft, y: y - domTop };
+  }
+
   const [, drop] = useDrop({
     accept: ItemTypes.CARD,
     drop(item: any, monitor) {
-      //   const { x: left, y: top } = getMousePos();
-      if (!item.left && item.left !== 0) {
+      const findId = cardsInBox?.find((fitem) => fitem?.id === item?.id);
+      if (!item.left || item.left === 0 || findId) {
         checkID(item);
-        item.left = 0;
-        item.top = 0;
-        console.log(item, 'item---');
-        const isInList = cardsInBox?.find(
-          (itemObj: CardsItemType) => itemObj.title === item.text,
+        const { x: left, y: top } = getMousePos();
+        item.left = left;
+        item.top = top;
+        const uniqByList = uniqBy(
+          [
+            ...jsPlumbListState,
+            {
+              jsPlumbId: item?.id,
+              title: item?.text,
+              childrenList: item?.childrenList,
+            },
+          ],
+          'jsPlumbId',
         );
-        if (!isInList) pushNewCardInBox(item);
-      }
-      //Перемещаем карточку если она уже была в боксе
-      else {
+        setJsPlumbListState(uniqByList);
+        pushNewCardInBox(item);
+      } else {
         const delta = monitor.getDifferenceFromInitialOffset() as any;
         const left = Math.round(item.left + delta.x);
         const top = Math.round(item.top + delta.y);
-        //Находит перетаскиваемую карту в массиве карт и передвигает её
         cardsInBox.forEach((el) => {
           if (el.id === item.id) moveBox(cardsInBox.indexOf(el), left, top);
         });
@@ -74,6 +102,41 @@ export const Container = ({
     );
   };
 
+  // label链接完成打开的modal
+  const onOpenModal = (value?: any) => {
+    setIsOpen(true);
+    setConneInfo(value);
+  };
+  const onCloseModal = async () => {
+    await form.validateFields().then((resForm) => {
+      const { hostTable, equal, childrenTable } = resForm;
+      const formText = `${hostTable}${equal}${childrenTable}`;
+      // setDeleteModalText(formText);
+      setIsOpen(false); // 关闭弹窗
+      const connector = conneInfo.connection.canvas;
+      // 获取conneInfo实例对应的label的dom元素
+      const labelTetxNode = connector.nextSibling;
+      labelTetxNode.innerHTML = `<div style="background:#ffff34;padding: 0 2px;cursor: pointer;color: #438eb9;font-size: 12px;">${formText}</div>`;
+      setConneInfo(null);
+    });
+  };
+  // 双击删除的打开modal
+  const onOpenDeleteModal = (value: any, conScene: any) => {
+    setIsDeleteLineModal(true);
+    setJsPlumb(value);
+    setDeleteConScene(conScene);
+  };
+  const onCloseDeleteModal = () => {
+    setIsDeleteLineModal(false);
+    jsPlumb.deleteConnection(deleteConScene);
+    setJsPlumb(null);
+    setDeleteConScene(false);
+  };
+  // 删除弹窗的文案
+  const deleteModalTetx = useMemo(() => {
+    const domText = deleteConScene?.canvas?.nextSibling?.innerText;
+    return domText || '';
+  }, [deleteConScene]);
   return (
     <div
       ref={drop}
@@ -82,16 +145,69 @@ export const Container = ({
         height: '400px',
         width: '100%',
       }}
+      id="flowChart"
     >
+      <Modal
+        open={isOpen}
+        title="关联关系（下拉选项支持搜索，区分大小写）"
+        onOk={onCloseModal}
+        onCancel={() => {
+          setIsOpen(false);
+        }}
+      >
+        <Form form={form}>
+          <Form.Item name="hostTable" label="主表">
+            <Select
+              options={[
+                {
+                  label: 'ACT_EVT_LOG.DATA_0',
+                  value: 'ACT_EVT_LOG.DATA_0',
+                },
+                {
+                  label: 'MOCK.DATA_1',
+                  value: 'MOCK.DATA_1',
+                },
+              ]}
+            />
+          </Form.Item>
+          <Form.Item name="equal" label="等于">
+            <Select
+              options={[
+                {
+                  label: '=',
+                  value: '=',
+                },
+              ]}
+            />
+          </Form.Item>
+          <Form.Item name="childrenTable" label="子表">
+            <Select
+              options={[
+                {
+                  label: 'CHILDREN.DATA_0',
+                  value: 'CHILDREN.DATA_0',
+                },
+                {
+                  label: 'CHILDREN.DATA_1',
+                  value: 'CHILDREN.DATA_1',
+                },
+              ]}
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
+      <Modal
+        open={isDeleteLineModal}
+        title="提示"
+        onOk={onCloseDeleteModal}
+        onCancel={() => {
+          setIsDeleteLineModal(false);
+        }}
+      >
+        删除【{deleteModalTetx}】的关系么？
+      </Modal>
       {cardsInBox.map((card) => {
         const { id, left, top, title, childrenList } = card;
-        const listChildren = childrenList?.map((item, index) => {
-          return {
-            text: item,
-            onlyId: `only_id${index}`,
-            isChecked: false,
-          };
-        });
         return (
           <Box
             key={cardsInBox.indexOf(card)}
@@ -100,7 +216,9 @@ export const Container = ({
             top={top}
             hideSourceOnDrag={hideSourceOnDrag}
             title={title}
-            childrenList={listChildren}
+            childrenList={childrenList}
+            onOpenModal={onOpenModal}
+            onOpenDeleteModal={onOpenDeleteModal}
           />
         );
       })}

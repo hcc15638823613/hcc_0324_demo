@@ -10,6 +10,7 @@ import { ProField } from '@ant-design/pro-components';
 import { Button } from 'antd';
 import { copyToClip } from '@/utils/copy';
 import AddTableModal from './addTable';
+import { useModel } from 'umi';
 // import GraphEditor from '@/components/GraphEditor/editorReact';
 
 const SqlDemo = () => {
@@ -47,7 +48,7 @@ const SqlDemo = () => {
   "include": ["**/src", "**/docs", "scripts", "**/demo", ".eslintrc.js"]
 }
 `);
-
+  const { jsPlumbListState } = useModel('useSqlInfo');
   const [cardsInBox, setCardsInBox] = useState<any>([]);
 
   function pushNewCardInBox(card: CardType) {
@@ -66,9 +67,13 @@ const SqlDemo = () => {
       }),
     );
   }
-  // const onChangeEditorValue = (val: string | undefined) => {
-  //   setEditorValue(val);
-  // };
+
+  const createSql = () => {
+    const newArr = jsPlumbListState?.filter((jsItem) => {
+      return jsItem?.childrenList?.some((cItem) => cItem?.isChecked);
+    });
+    console.log(newArr, 'newArr+++++_____');
+  };
   return (
     <div style={{ background: '#f5f6fa' }}>
       <div className={'editorContent'}>
@@ -104,7 +109,7 @@ const SqlDemo = () => {
             </div>
             <ProField
               text={editorValue}
-              valueType="jsonCode"
+              valueType="code"
               mode={'read'}
               plain={true}
               style={{ width: '100%' }}
@@ -124,7 +129,7 @@ const SqlDemo = () => {
             </div>
             <ProField
               text={editorValue}
-              valueType="jsonCode"
+              valueType="code"
               mode={'read'}
               plain={true}
             />
@@ -133,7 +138,9 @@ const SqlDemo = () => {
       </div>
       <div className="footerBox">
         <AddTableModal />
-        <Button className="createSql">生成SQL</Button>
+        <Button className="createSql" onClick={createSql}>
+          生成SQL
+        </Button>
       </div>
     </div>
   );

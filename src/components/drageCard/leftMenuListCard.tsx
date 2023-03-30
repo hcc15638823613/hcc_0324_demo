@@ -1,8 +1,9 @@
 //LEFT COLUMN
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { ItemTypes } from './ItemType';
+import { ItemTypes } from './type';
 import './index.less';
+import type { ChildrenTableListType } from './type';
 
 interface CardPropsType {
   id: number;
@@ -12,7 +13,7 @@ interface CardPropsType {
   left: number | null;
   top: number | null;
   deleteCard?: () => void;
-  childrenList: string[] | undefined;
+  childrenList: ChildrenTableListType[] | undefined;
   tableDescription: string | undefined;
 }
 export const Card = ({

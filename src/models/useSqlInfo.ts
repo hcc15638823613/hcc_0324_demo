@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import type { CardType } from '@/components/drageCard/type';
+import { uniqueId } from 'lodash';
+import type { CardType, JsPlubListType } from '@/components/drageCard/type';
 const mockList = [
   'VHSDHSJD_UIS',
   'EERRTT_UUYYT',
@@ -9,6 +10,13 @@ const mockList = [
   'YYTT_LLKKJJ',
   'OO_KKLLGGF',
 ];
+const mockListObjList = mockList?.map((item) => {
+  return {
+    id: uniqueId('onlyId'),
+    text: item,
+    isChecked: false,
+  };
+});
 const useSqlInfo = () => {
   const [cardList, setCardList] = useState<CardType[]>([
     {
@@ -16,7 +24,7 @@ const useSqlInfo = () => {
       top: null,
       left: null,
       text: 'Write a cool JS library',
-      childrenList: mockList,
+      childrenList: mockListObjList,
       tableDescription: 'xxx',
     },
     {
@@ -24,51 +32,57 @@ const useSqlInfo = () => {
       top: null,
       left: null,
       text: 'Make it generic enough',
-      childrenList: mockList,
+      childrenList: mockListObjList,
     },
     {
       id: 3,
       top: null,
       left: null,
       text: 'Write README',
-      childrenList: mockList,
+      childrenList: mockListObjList,
     },
     {
       id: 4,
       top: null,
       left: null,
       text: 'Create some examples',
-      childrenList: mockList,
+      childrenList: mockListObjList,
     },
     {
       id: 5,
       top: null,
       left: null,
       text: 'Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
-      childrenList: mockList,
+      childrenList: mockListObjList,
       tableDescription: 'mock数据',
     },
     {
       id: 6,
       top: null,
       left: null,
-      text: '???',
-      childrenList: mockList,
+      text: 'Text Label',
+      childrenList: mockListObjList,
     },
     {
       id: 7,
       top: null,
       left: null,
       text: 'PROFIT',
-      childrenList: mockList,
+      childrenList: mockListObjList,
     },
   ]);
   const [leftMenuList, setLeftMenuList] = useState<CardType[]>([]);
+  const [jsPlumbListState, setJsPlumbListState] = useState<JsPlubListType[]>(
+    [],
+  );
+
   return {
     cardList,
     setCardList,
     leftMenuList,
     setLeftMenuList,
+    jsPlumbListState,
+    setJsPlumbListState,
   };
 };
 export default useSqlInfo;
