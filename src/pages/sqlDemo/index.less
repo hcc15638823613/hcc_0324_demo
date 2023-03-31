@@ -1,0 +1,155 @@
+.editorContent {
+  padding: 10px;
+  background-color: #fafafa;
+  height: 100%;
+  display: flex;
+  justify-content: flex-start;
+  .contentTopleft {
+    height: 400px;
+    background: #62a8d1;
+    padding: 0 5px 0 5px;
+    width: 17%;
+    .contentTopLeftTable {
+      //   height: 60px;
+      #leftMenu li {
+        height: 30px;
+        /* width: 240px; */
+        background-color: #438eb9;
+        border-radius: 2px;
+        font-size: 12px;
+        color: #e4e4e4;
+        margin-bottom: 4px;
+        list-style-type: none;
+        vertical-align: middle;
+        line-height: 30px;
+        z-index: 1;
+        cursor: pointer;
+        padding-left: 8px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+.imgBackgrounp {
+  background: url('../../public/image/bg_table.png') no-repeat center;
+  background-size: 30%;
+  margin-top: 10px;
+  height: 30px;
+}
+.contentTopRight {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  padding: 0;
+  background: url('../../public/image/bg_edit.png') no-repeat center;
+  min-height: 400px;
+}
+.moveBoxItem {
+  background-color: aqua;
+  cursor: move;
+  padding: 12px;
+}
+.tabItem {
+  :global {
+    .ant-table-cell {
+      height: 20px;
+    }
+    .ant-table-row {
+      height: 12px !important;
+    }
+  }
+}
+.preContext {
+  width: 100%;
+  margin-top: 15px;
+  background-color: #fff;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 5%);
+  border: 1px solid #e6e6e6;
+  .preContextHeader {
+    height: 42px;
+    width: 100%;
+    line-height: 42px;
+    padding: 0px 15px;
+    background: #f2f2f2;
+    border-bottom: 1px solid #e6e6e6;
+  }
+  .preContentBox {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 15px;
+    .leftBox {
+      width: 46%;
+      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 5%);
+      border: 1px solid #e6e6e6;
+      pre {
+        width: 100% !important;
+        background: white !important;
+      }
+      .leftBoxHeader {
+        display: flex;
+        justify-content: space-between;
+        height: 32px;
+        line-height: 32px;
+        padding: 0px 15px;
+        border-bottom: 1px solid #e6e6e6;
+        background: #f2f2f2;
+        .copyCode {
+          color: #1e9fff;
+          cursor: pointer;
+        }
+        .runCode {
+          font-weight: 700;
+          font-size: 12px;
+        }
+      }
+    }
+    .rightBox {
+      width: 46%;
+      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 5%);
+      border: 1px solid #e6e6e6;
+      pre {
+        width: 100% !important;
+        background: white !important;
+      }
+      .rightBoxHeader {
+        display: flex;
+        justify-content: space-between;
+        height: 32px;
+        line-height: 32px;
+        padding: 0px 15px;
+        border-bottom: 1px solid #e6e6e6;
+        background: #f2f2f2;
+        .copyCode {
+          color: #1e9fff;
+          cursor: pointer;
+        }
+        .runCode {
+          font-weight: 700;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+.footerBox {
+  height: 50px;
+  width: 100%;
+  background-color: #fff;
+  z-index: 999;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 24px;
+  .addTable {
+    margin-left: 24px;
+    margin-right: 24px;
+    background: #1cc88a;
+    color: white;
+  }
+  .createSql {
+    background: #4285f4;
+    color: white;
+  }
+}

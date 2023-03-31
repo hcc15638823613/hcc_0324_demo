@@ -16,6 +16,7 @@ export default defineConfig({
     // default true, when it is true, will use `navigator.language` overwrite default
     baseNavigator: true,
   },
+  plugins: [],
   layout: { siderWidth: 208, ...defaultSettings, locale: true },
   multitabs: {},
   routes: routes,

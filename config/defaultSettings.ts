@@ -7,7 +7,7 @@ const Settings = {
   fixedHeader: true,
   fixSiderbar: true,
   colorWeak: false,
-  title: '自定义页面实验',
+  title: 'React拖拽',
   pwa: false,
   logo: false,
   iconfontUrl: '',

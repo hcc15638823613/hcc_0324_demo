@@ -48,8 +48,9 @@ export default {
   //   'menu.demandManagement.preproductionResults': '预排产结果',
   //   'menu.demandManagement.plan-sale-compare': '计划/执行对比',
   'menu.dashboard': '综合展示',
-  'menu.dashboard.today': '今日概况',
-  'menu.dashboard.week': '本周概况',
+  'menu.dashboard.today': '可视化大屏数据',
+  'menu.dashboard.week': '在线编辑器',
   'menu.history': '历史数据',
-  'menu.demandManagement': '需求管理',
+  'menu.demandManagement': '立体长方体',
+  'menu.sqlDemo': 'SQL在线编辑器',
 };
