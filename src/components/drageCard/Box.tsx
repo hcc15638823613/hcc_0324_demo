@@ -1,6 +1,6 @@
 /** 可拖拽流程图单体 */
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import type { ChildrenTableListType } from './type';
 import { ItemTypes } from './type';
@@ -23,6 +23,7 @@ interface PropsType {
   onOpenDeleteModal: (value: any, conScene: any) => void;
 }
 const jsPlumbInstence = jsPlumb as any;
+
 export const Box = ({
   id,
   left,
@@ -171,12 +172,6 @@ export const Box = ({
         <div className="canvasItemBox">
           <div className="headerTitle">
             <h4 className="headerText">{title}</h4>
-            {/* <span
-              style={{ marginRight: '6px', cursor: 'pointer' }}
-              onClick={deleteCard}
-            >
-              X
-            </span> */}
             <CloseOutlined
               style={{ marginRight: '6px', cursor: 'pointer' }}
               onClick={deleteCard}

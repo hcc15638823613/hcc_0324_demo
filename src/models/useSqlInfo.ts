@@ -18,6 +18,7 @@ const mockListObjList = mockList?.map((item) => {
   };
 });
 const useSqlInfo = () => {
+  // 原始数据
   const [cardList, setCardList] = useState<CardType[]>([
     {
       id: 1,
@@ -71,7 +72,11 @@ const useSqlInfo = () => {
       childrenList: mockListObjList,
     },
   ]);
+
+  //左侧列表
   const [leftMenuList, setLeftMenuList] = useState<CardType[]>([]);
+
+  // 右侧拖拽区域数据
   const [jsPlumbListState, setJsPlumbListState] = useState<JsPlubListType[]>(
     [],
   );

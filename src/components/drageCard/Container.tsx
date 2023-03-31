@@ -1,3 +1,5 @@
+/* 右侧拖拽容器 */
+
 import { useDrop } from 'react-dnd';
 import { ItemTypes } from './type';
 import { Box } from './Box';
@@ -24,11 +26,11 @@ export const Container = ({
   const [form] = Form.useForm();
   // 画布上的 dom实例
   const { jsPlumbListState, setJsPlumbListState } = useModel('useSqlInfo');
-  // 工具
+  // 流程图工具
   const [jsPlumb, setJsPlumb] = useState<any>();
   // jsPlumb实例
   const [conneInfo, setConneInfo] = useState<any>();
-  // 删除的实体
+  // 删除连线的实体
   const [deleteConScene, setDeleteConScene] = useState<any>();
   // 填写 连线label的modal
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -51,11 +53,11 @@ export const Container = ({
     const domLeft = flowChart?.left || 0;
     const domTop = flowChart?.top || 0;
     var e = event || window.event;
-    var scrollX =
-      document.documentElement.scrollLeft || document.body.scrollLeft;
-    var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
-    var x = e.pageX || e.clientX + scrollX;
-    var y = e.pageY || e.clientY + scrollY;
+    // var scrollX =
+    //   document.documentElement.scrollLeft || document.body.scrollLeft;
+    // var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+    var x = e.pageX || e.clientX;
+    var y = e.pageY || e.clientY;
     return { x: x - domLeft, y: y - domTop };
   }
 
@@ -111,8 +113,7 @@ export const Container = ({
     await form.validateFields().then((resForm) => {
       const { hostTable, equal, childrenTable } = resForm;
       const formText = `${hostTable}${equal}${childrenTable}`;
-      // setDeleteModalText(formText);
-      setIsOpen(false); // 关闭弹窗
+      setIsOpen(false);
       const connector = conneInfo.connection.canvas;
       // 获取conneInfo实例对应的label的dom元素
       const labelTetxNode = connector.nextSibling;
@@ -120,12 +121,13 @@ export const Container = ({
       setConneInfo(null);
     });
   };
-  // 双击删除的打开modal
+  // 双击连线的打开modal
   const onOpenDeleteModal = (value: any, conScene: any) => {
     setIsDeleteLineModal(true);
     setJsPlumb(value);
     setDeleteConScene(conScene);
   };
+  // 关闭连线的modal
   const onCloseDeleteModal = () => {
     setIsDeleteLineModal(false);
     jsPlumb.deleteConnection(deleteConScene);

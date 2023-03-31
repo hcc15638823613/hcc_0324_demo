@@ -1,4 +1,4 @@
-//LEFT COLUMN
+/* 左侧列表 */
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { ItemTypes } from './type';

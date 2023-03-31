@@ -1,3 +1,4 @@
+/* 右侧拖拽容器加背景图*/
 import { Container } from './Container';
 import type { CardsItemType } from './type';
 import '@/pages/sqlDemo/index.less';
